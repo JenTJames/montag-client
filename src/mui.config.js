@@ -27,7 +27,7 @@ export const lightTheme = createTheme({
     },
   },
   components: {
-    MuiTextField: {
+    MuiInputBase: {
       styleOverrides: {
         root: {
           "&:hover": {
