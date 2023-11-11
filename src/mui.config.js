@@ -21,6 +21,11 @@ export const lightTheme = createTheme({
     },
     subtle: LIGHTCOLORS.subtle,
   },
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
   components: {
     MuiTextField: {
       styleOverrides: {
