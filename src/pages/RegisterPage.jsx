@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
+import Brand from "../assets/brand.svg";
 import Row from "../components/Row";
 import Image from "../assets/reg.svg";
 import Form from "../components/Form";
@@ -35,7 +37,8 @@ const RegisterPage = () => {
           </Typography>
         </div>
       </div>
-      <div className="flex flex-col gap-5 flex-1 justify-center items-center">
+      <div className="relative flex flex-col gap-5 flex-1 justify-center items-center">
+        <img className="absolute top-5 right-5 w-14" src={Brand} />
         <Card>
           <div className="flex flex-col gap-1">
             <Typography
@@ -126,12 +129,16 @@ const RegisterPage = () => {
               disableElevation
               type="submit"
               color="primary"
+              startIcon={<IoCheckmarkDoneCircle size={25} />}
+              size="large"
             >
-              Submit
+              Signup
             </Button>
           </Form>
           <div className="flex justify-center gap-1">
-            <Typography className="text-slate-500" variant="body2">Already have an account?</Typography>
+            <Typography className="text-slate-500" variant="body2">
+              Already have an account?
+            </Typography>
             <Link to="/login">Login</Link>
           </div>
         </Card>
