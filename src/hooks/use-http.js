@@ -3,20 +3,28 @@ import axios from "axios";
 
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const requestData = useCallback(async (endpoint, method, data) => {
     setIsLoading(true);
-    const url = "http://localhost:3001/";
+    let response;
     try {
-      const response = await axios({
+      response = await axios({
         method: method ? method : "GET",
         data: data ? data : null,
-        url: url + endpoint,
+        url: import.meta.env.VITE_BACKEND_BASE_URL + endpoint,
       });
       return response;
     } catch (error) {
-      setError(error);
+      const message =
+        error.response.status === 500
+          ? "Internal Server Error"
+          : "Something went wrong. Please try again later";
+      const err = {
+        isError: true,
+        error,
+        message,
+      };
+      return err;
     } finally {
       setIsLoading(false);
     }
@@ -25,7 +33,6 @@ const useHttp = () => {
   return {
     isLoading,
     requestData,
-    error,
   };
 };
 
