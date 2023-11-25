@@ -36,6 +36,13 @@ export const lightTheme = createTheme({
         },
       },
     },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#050505DD",
+        },
+      },
+    },
   },
 });
 
