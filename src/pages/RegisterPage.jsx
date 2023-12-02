@@ -116,131 +116,134 @@ const RegisterPage = () => {
         </div>
         <div className="relative flex flex-col gap-5 flex-1 justify-center items-center">
           <img className="absolute top-5 right-5 w-14" src={Brand} />
-          <Card>
-            <div className="flex flex-col gap-1">
-              <Typography
-                className="text-gray-600 font-regular font-semibold text-2xl"
-                variant="p"
-              >
-                Create an Account
-              </Typography>
-              <Typography className="text-gray-500" variant="body2">
-                Enter your details below to create your account and get started.
-              </Typography>
-            </div>
-            <Form onSubmit={handleSubmit(submitHandler)}>
-              <Row>
-                <Input
-                  control={registerControl}
-                  name="firstname"
-                  label="Firstname"
-                  type="text"
-                  required
-                  rules={{
-                    required: "This field is required",
-                  }}
-                />
-                <Input
-                  control={registerControl}
-                  name="lastname"
-                  label="Lastname"
-                  type="text"
-                  required
-                  rules={{
-                    required: "This field is required",
-                  }}
-                />
-              </Row>
-              <Input
-                control={registerControl}
-                name="phoneNumber"
-                label="Phone Number"
-                type="text"
-                required
-                rules={{
-                  required: "This field is required",
-                  minLength: {
-                    value: 10,
-                    message: "Enter a valid phone number",
-                  },
-                  maxLength: {
-                    value: 10,
-                    message: "Enter a valid phone number",
-                  },
-                }}
-              />
-              <Input
-                control={registerControl}
-                name="email"
-                label="Email"
-                type="email"
-                required
-                rules={{
-                  required: "This field is required",
-                }}
-              />
-              <Input
-                control={registerControl}
-                name="password"
-                label="Password"
-                type="password"
-                required
-                rules={{
-                  required: "This field is required",
-                  validate: validatePassword,
-                }}
-              />
-              <Input
-                control={registerControl}
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                required
-                rules={{
-                  required: "This field is required",
-                  validate: validateConfirmPassword,
-                }}
-              />
-              <div className="flex items-center justify-between my-2">
-                <Typography className="text-slate-500" variant="body2">
-                  Which role best describes you?
-                </Typography>
-                <ToggleButtonGroup
-                  color="primary"
-                  value={role}
-                  exclusive
-                  onChange={roleChangeHandler}
+          <div className="w-3/4">
+            <Card>
+              <div className="flex flex-col gap-1">
+                <Typography
+                  className="text-gray-600 font-regular font-semibold text-2xl"
+                  variant="p"
                 >
-                  {getRoles().map((tempRole) => (
-                    <ToggleButton
-                      disableRipple
-                      key={tempRole.id}
-                      value={tempRole.id}
-                    >
-                      {tempRole.name}
-                    </ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
+                  Create an Account
+                </Typography>
+                <Typography className="text-gray-500" variant="body2">
+                  Enter your details below to create your account and get
+                  started.
+                </Typography>
               </div>
-              <LoadingButton
-                loading={isCreatingUser}
-                variant="contained"
-                disableElevation
-                type="submit"
-                color="primary"
-                startIcon={<IoCheckmarkDoneCircle size={25} />}
-                size="large"
-              >
-                Signup
-              </LoadingButton>
-            </Form>
-            <div className="flex justify-center gap-1">
-              <Typography className="text-slate-500" variant="body2">
-                Already have an account?
-              </Typography>
-              <Link to="/login">Login</Link>
-            </div>
-          </Card>
+              <Form onSubmit={handleSubmit(submitHandler)}>
+                <Row>
+                  <Input
+                    control={registerControl}
+                    name="firstname"
+                    label="Firstname"
+                    type="text"
+                    required
+                    rules={{
+                      required: "This field is required",
+                    }}
+                  />
+                  <Input
+                    control={registerControl}
+                    name="lastname"
+                    label="Lastname"
+                    type="text"
+                    required
+                    rules={{
+                      required: "This field is required",
+                    }}
+                  />
+                </Row>
+                <Input
+                  control={registerControl}
+                  name="phoneNumber"
+                  label="Phone Number"
+                  type="text"
+                  required
+                  rules={{
+                    required: "This field is required",
+                    minLength: {
+                      value: 10,
+                      message: "Enter a valid phone number",
+                    },
+                    maxLength: {
+                      value: 10,
+                      message: "Enter a valid phone number",
+                    },
+                  }}
+                />
+                <Input
+                  control={registerControl}
+                  name="email"
+                  label="Email"
+                  type="email"
+                  required
+                  rules={{
+                    required: "This field is required",
+                  }}
+                />
+                <Input
+                  control={registerControl}
+                  name="password"
+                  label="Password"
+                  type="password"
+                  required
+                  rules={{
+                    required: "This field is required",
+                    validate: validatePassword,
+                  }}
+                />
+                <Input
+                  control={registerControl}
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  required
+                  rules={{
+                    required: "This field is required",
+                    validate: validateConfirmPassword,
+                  }}
+                />
+                <div className="flex items-center justify-between my-2">
+                  <Typography className="text-slate-500" variant="body2">
+                    Which role best describes you?
+                  </Typography>
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={role}
+                    exclusive
+                    onChange={roleChangeHandler}
+                  >
+                    {getRoles().map((tempRole) => (
+                      <ToggleButton
+                        disableRipple
+                        key={tempRole.id}
+                        value={tempRole.id}
+                      >
+                        {tempRole.name}
+                      </ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                </div>
+                <LoadingButton
+                  loading={isCreatingUser}
+                  variant="contained"
+                  disableElevation
+                  type="submit"
+                  color="primary"
+                  startIcon={<IoCheckmarkDoneCircle size={25} />}
+                  size="large"
+                >
+                  Signup
+                </LoadingButton>
+              </Form>
+              <div className="flex justify-center gap-1">
+                <Typography className="text-slate-500" variant="body2">
+                  Already have an account?
+                </Typography>
+                <Link to="/login">Login</Link>
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
     </>

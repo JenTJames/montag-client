@@ -9,7 +9,7 @@ const StyledDiv = styled.div`
 `;
 
 const Card = ({ children, shadow = false }) => {
-  return <StyledDiv className="flex flex-col p-5 rounded-md gap-7" $shadow={shadow}>{children}</StyledDiv>;
+  return <StyledDiv className="flex w-full flex-col p-5 rounded-md gap-7" $shadow={shadow}>{children}</StyledDiv>;
 };
 
 Card.propTypes = {
