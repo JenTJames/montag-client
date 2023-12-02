@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 
-import "./App.css";
 import { lightTheme } from "./mui.config";
 import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   return (
@@ -11,8 +11,9 @@ const App = () => {
       <div className="max-w-full min-h-screen">
         <Routes>
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-          <Route path="*" element={<Navigate to="/register" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </div>
     </ThemeProvider>
