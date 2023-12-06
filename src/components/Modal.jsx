@@ -5,6 +5,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { PiSealWarningFill } from "react-icons/pi";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
 const Modal = ({
   show,
@@ -14,14 +16,22 @@ const Modal = ({
   positiveButtonText,
   title,
   description,
+  severity = "success",
 }) => {
   return (
     <Dialog open={show} onClose={negetiveButtonHandler}>
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {description}
-        </DialogContentText>
+      <DialogTitle>
+        <div className="flex items-center gap-2">
+          {severity === "success" ? (
+            <IoCheckmarkDoneCircle size={40} color="limegreen" />
+          ) : (
+            <PiSealWarningFill size={40} color="orange" />
+          )}
+          {title}
+        </div>
+      </DialogTitle>
+      <DialogContent className="ml-11">
+        <DialogContentText>{description}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={negetiveButtonHandler}>{negetiveButtonText}</Button>
@@ -37,10 +47,11 @@ Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  negetiveButtonText: PropTypes.string.isRequired,
+  negetiveButtonText: PropTypes.string,
   positiveButtonText: PropTypes.string.isRequired,
-  negetiveButtonHandler: PropTypes.func.isRequired,
+  negetiveButtonHandler: PropTypes.func,
   positiveButtonHandler: PropTypes.func.isRequired,
+  severity: PropTypes.string,
 };
 
 export default Modal;

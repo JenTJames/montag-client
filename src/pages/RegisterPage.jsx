@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -12,6 +13,7 @@ import Brand from "../assets/brand.svg";
 import useHttp from "../hooks/use-http";
 import useToast from "../hooks/use-toast";
 import useData from "../hooks/use-data";
+import useModal from "../hooks/use-modal";
 
 import Row from "../components/Row";
 import Form from "../components/Form";
@@ -20,10 +22,13 @@ import Link from "../components/Link";
 import Input from "../components/Input";
 import Toast from "../components/Toast";
 import Spinner from "../components/Spinner";
+import Modal from "../components/Modal";
 
 const RegisterPage = () => {
-  const { get: getRoles, setData: setRoles } = useData();
   const [role, setRole] = useState(0);
+  const { get: getRoles, setData: setRoles } = useData();
+
+  const navigate = useNavigate();
 
   const { isLoading: isFetchingRoles, requestData: fetchRoles } = useHttp();
   const { isLoading: isCreatingUser, requestData: createUser } = useHttp();
@@ -37,6 +42,8 @@ const RegisterPage = () => {
   });
 
   const { toast, closeToast, createToast } = useToast();
+
+  const { showModal, hideModal, modalVisible } = useModal();
 
   useEffect(() => {
     const initializeRoles = async () => {
@@ -90,14 +97,24 @@ const RegisterPage = () => {
       createToast(message, "error");
       return;
     }
-    createToast(
-      "Your account is created. Please login with your credentials",
-      "success"
-    );
+    showModal();
+  };
+
+  const navigateHandler = () => {
+    hideModal();
+    navigate("/login");
   };
 
   return (
     <>
+      <Modal
+        show={modalVisible}
+        positiveButtonHandler={navigateHandler}
+        title="Account Created"
+        description="Your account has been created successfully. You can login with your credentials"
+        positiveButtonText="Login"
+        severity="success"
+      />
       <Spinner isLoading={isFetchingRoles} />
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
