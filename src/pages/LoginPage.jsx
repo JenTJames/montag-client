@@ -8,6 +8,7 @@ import Image from "../assets/login.svg";
 import Brand from "../assets/brand.svg";
 import useHttp from "../hooks/use-http";
 import useToast from "../hooks/use-toast";
+import useModal from "../hooks/use-modal";
 import AuthContext from "../store/auth-context";
 
 import Card from "../components/Card";
@@ -15,9 +16,12 @@ import Form from "../components/Form";
 import Link from "../components/Link";
 import Toast from "../components/Toast";
 import Input from "../components/Input";
+import Modal from "../components/Modal";
 
 const LoginPage = () => {
   const { setUser } = useContext(AuthContext);
+
+  const { showModal, hideModal, modal } = useModal();
 
   const { control: loginControl, handleSubmit } = useForm({
     defaultValues: {
@@ -52,7 +56,12 @@ const LoginPage = () => {
       lastname: response.data.lastname,
       email: response.data.email,
     });
-    alert("Logged in!");
+    showModal(
+      "Successfully logged in!",
+      "You are authenticated and you should be able to access your account now. You will be granted access to your dashboard once it is ready.",
+      "success",
+      "Okay"
+    );
   };
 
   return (
@@ -60,6 +69,14 @@ const LoginPage = () => {
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
       </Toast>
+      <Modal
+        show={modal.show}
+        title={modal.title}
+        description={modal.description}
+        positiveButtonHandler={hideModal}
+        positiveButtonText={modal.positiveButtonText}
+        severity={modal.severity}
+      />
       <div className="w-screen h-screen flex">
         <div className="flex flex-col gap-4 flex-1 bg-gradient-to-tl from-violet-500 to-indigo-200 h-screen justify-center items-center rounded-r-md">
           <img className="w-1/2" src={Image} />

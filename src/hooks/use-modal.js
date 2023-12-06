@@ -1,18 +1,43 @@
 import { useState } from "react";
 
 const useModal = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modal, setModal] = useState({
+    show: false,
+    title: "",
+    description: "",
+    severity: "success",
+    positiveButtonText: "Confirm",
+    negetiveButtonText: "",
+  });
 
-  const showModal = () => {
-    setModalVisible(true);
+  const showModal = (
+    title,
+    description,
+    severity = "success",
+    positiveButtonText = "Confirm",
+    negetiveButtonText
+  ) => {
+    setModal({
+      show: true,
+      title,
+      description,
+      severity,
+      positiveButtonText,
+      negetiveButtonText,
+    });
   };
 
   const hideModal = () => {
-    setModalVisible(false);
+    setModal((currentState) => {
+      return {
+        ...currentState,
+        show: false,
+      };
+    });
   };
 
   return {
-    modalVisible,
+    modal,
     showModal,
     hideModal,
   };

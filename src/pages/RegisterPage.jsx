@@ -43,7 +43,7 @@ const RegisterPage = () => {
 
   const { toast, closeToast, createToast } = useToast();
 
-  const { showModal, hideModal, modalVisible } = useModal();
+  const { showModal, hideModal, modal } = useModal();
 
   useEffect(() => {
     const initializeRoles = async () => {
@@ -97,7 +97,12 @@ const RegisterPage = () => {
       createToast(message, "error");
       return;
     }
-    showModal();
+    showModal(
+      "Account Created",
+      "Your account has been created successfully. You can login with your credentials",
+      "success",
+      "Continue to Login"
+    );
   };
 
   const navigateHandler = () => {
@@ -108,11 +113,11 @@ const RegisterPage = () => {
   return (
     <>
       <Modal
-        show={modalVisible}
+        show={modal.show}
         positiveButtonHandler={navigateHandler}
-        title="Account Created"
-        description="Your account has been created successfully. You can login with your credentials"
-        positiveButtonText="Login"
+        title={modal.title}
+        description={modal.description}
+        positiveButtonText={modal.positiveButtonText}
         severity="success"
       />
       <Spinner isLoading={isFetchingRoles} />

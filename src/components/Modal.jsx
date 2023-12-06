@@ -34,8 +34,15 @@ const Modal = ({
         <DialogContentText>{description}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={negetiveButtonHandler}>{negetiveButtonText}</Button>
-        <Button onClick={positiveButtonHandler} autoFocus>
+        {negetiveButtonHandler && (
+          <Button onClick={negetiveButtonHandler}>{negetiveButtonText}</Button>
+        )}
+        <Button
+          disableElevation
+          variant="contained"
+          onClick={positiveButtonHandler}
+          autoFocus
+        >
           {positiveButtonText}
         </Button>
       </DialogActions>
