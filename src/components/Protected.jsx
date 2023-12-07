@@ -8,6 +8,7 @@ import AuthContext from "../store/auth-context";
 
 import Toast from "./Toast";
 import Spinner from "./Spinner";
+import Sidebar from "./Sidebar";
 
 const Protected = ({ component }) => {
   const { user, setUser } = useContext(AuthContext);
@@ -42,7 +43,10 @@ const Protected = ({ component }) => {
       <Toast close={closeToast} show={toast.show} severity={toast.severity}>
         {toast.message}
       </Toast>
-      {component}
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1">{component}</div>
+      </div>
     </>
   );
 };
