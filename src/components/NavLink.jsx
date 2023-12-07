@@ -25,8 +25,8 @@ const NavLink = ({ to, label, icon, orientation = "vertical" }) => {
     <MuiNavLink
       className={(navData) =>
         navData.isActive
-          ? "p-3 bg-purple-100 rounded-md text-primary"
-          : "p-3 hover:bg-purple-50 rounded-md text-subtle"
+          ? "p-3 bg-primary-100 rounded-md text-primary-700"
+          : "p-3 hover:bg-primary-50 rounded-md text-subtle"
       }
       to={to}
     >
@@ -34,7 +34,7 @@ const NavLink = ({ to, label, icon, orientation = "vertical" }) => {
         {icon}
         <StyledTextWrapper orientation={orientation}>
           <Typography
-            className="text-center text-primaryt-500"
+            className="text-center text-primary-500"
             variant={orientation === "vertical" ? "caption" : "subtitle1"}
           >
             {label}
