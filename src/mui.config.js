@@ -27,6 +27,11 @@ export const lightTheme = createTheme({
     },
   },
   components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+    },
     MuiInputBase: {
       styleOverrides: {
         root: {
