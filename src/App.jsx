@@ -2,8 +2,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 
 import { lightTheme } from "./mui.config";
-import RegisterPage from "./pages/RegisterPage";
+import Protected from "./components/Protected";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import DashboardPage from "./pages/DashboardPage";
 
 const App = () => {
   return (
@@ -12,6 +14,11 @@ const App = () => {
         <Routes>
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+
+          <Route
+            path="/dashboard"
+            element={<Protected component={<DashboardPage />} />}
+          />
 
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>

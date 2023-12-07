@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
@@ -8,7 +9,6 @@ import Image from "../assets/login.svg";
 import Brand from "../assets/brand.svg";
 import useHttp from "../hooks/use-http";
 import useToast from "../hooks/use-toast";
-import useModal from "../hooks/use-modal";
 import AuthContext from "../store/auth-context";
 
 import Card from "../components/Card";
@@ -16,12 +16,11 @@ import Form from "../components/Form";
 import Link from "../components/Link";
 import Toast from "../components/Toast";
 import Input from "../components/Input";
-import Modal from "../components/Modal";
 
 const LoginPage = () => {
   const { setUser } = useContext(AuthContext);
 
-  const { showModal, hideModal, modal } = useModal();
+  const navigate = useNavigate();
 
   const { control: loginControl, handleSubmit } = useForm({
     defaultValues: {
@@ -49,19 +48,14 @@ const LoginPage = () => {
           : response.message;
       return createToast(message, "error");
     }
-    localStorage.setItem("userId", response.data.id);
+    localStorage.setItem("email", response.data.email);
     setUser({
       id: response.data.id,
       firstname: response.data.firstname,
       lastname: response.data.lastname,
       email: response.data.email,
     });
-    showModal(
-      "Successfully logged in!",
-      "You are authenticated and you should be able to access your account now. You will be granted access to your dashboard once it is ready.",
-      "success",
-      "Okay"
-    );
+    navigate("/dashboard");
   };
 
   return (
@@ -69,14 +63,6 @@ const LoginPage = () => {
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
       </Toast>
-      <Modal
-        show={modal.show}
-        title={modal.title}
-        description={modal.description}
-        positiveButtonHandler={hideModal}
-        positiveButtonText={modal.positiveButtonText}
-        severity={modal.severity}
-      />
       <div className="w-screen h-screen flex">
         <div className="flex flex-col gap-4 flex-1 bg-gradient-to-tl from-violet-500 to-indigo-200 h-screen justify-center items-center rounded-r-md">
           <img className="w-1/2" src={Image} />
