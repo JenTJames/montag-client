@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const useModal = () => {
   const [modal, setModal] = useState({
@@ -10,22 +10,25 @@ const useModal = () => {
     negetiveButtonText: "",
   });
 
-  const showModal = (
-    title,
-    description,
-    severity = "success",
-    positiveButtonText = "Confirm",
-    negetiveButtonText
-  ) => {
-    setModal({
-      show: true,
+  const showModal = useCallback(
+    (
       title,
       description,
-      severity,
-      positiveButtonText,
-      negetiveButtonText,
-    });
-  };
+      severity = "success",
+      positiveButtonText = "Confirm",
+      negetiveButtonText
+    ) => {
+      setModal({
+        show: true,
+        title,
+        description,
+        severity,
+        positiveButtonText,
+        negetiveButtonText,
+      });
+    },
+    []
+  );
 
   const hideModal = () => {
     setModal((currentState) => {
