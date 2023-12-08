@@ -48,7 +48,7 @@ const Protected = ({ component }) => {
         <Sidebar />
         <div className="flex-1">
           <Topbar />
-          <div className="flex-1 p-16">{component}</div>
+          <div className="flex-1 px-16">{component}</div>
         </div>
       </div>
     </>
