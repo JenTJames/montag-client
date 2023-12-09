@@ -41,10 +41,25 @@ export const lightTheme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          background: "rgba(255, 255, 255, 0.67)",
+          backdropFilter: "blur(45px)",
+          borderRadius: "15px",
+          border: "1px solid #F0F2F4",
+          boxShadow: "rgba(0, 0, 0, 0.1) -4px 9px 25px -6px",
+          paddingBottom: "0px",
+        },
+        list: {
+          padding: "0px",
+        },
+      },
+    },
+    MuiDivider: {
       styleOverrides: {
         root: {
-          backgroundColor: "#050505DD",
+          border: "1px dashed #d4dbe3",
         },
       },
     },
