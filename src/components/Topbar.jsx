@@ -11,9 +11,9 @@ import Menu from "./Menu";
 import MenuItem from "./MenuItem";
 
 const TopBar = () => {
-  const navigate = useNavigate();
+  const { setUser, user } = useContext(AuthContext);
 
-  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const logoutHandler = () => {
     setUser({
@@ -41,9 +41,11 @@ const TopBar = () => {
         }
       >
         <div className="flex flex-col px-4 my-2 cursor-default">
-          <h1 className="font-semibold text-secondary-700">Jen James</h1>
+          <h1 className="font-semibold text-secondary-700">
+            {user.firstname + " " + user.lastname || "hello"}
+          </h1>
           <Typography className="text-secondary-500" variant="subtitle2">
-            jenthomasjames@gmail.com
+            {user.email}
           </Typography>
         </div>
         <Divider />
