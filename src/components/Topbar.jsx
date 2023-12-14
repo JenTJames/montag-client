@@ -23,9 +23,11 @@ const TopBar = () => {
       email: "",
     });
     localStorage.clear();
-    navigate("/login", {
-      replace: true,
-    });
+    changePage("/login", { replace: true });
+  };
+
+  const changePage = (to, config) => {
+    navigate(to, config);
   };
 
   return (
@@ -50,8 +52,13 @@ const TopBar = () => {
         </div>
         <Divider />
         <div className="flex flex-col my-3">
-          <MenuItem onClick={() => {}}>Profile</MenuItem>
-          <MenuItem onClick={() => {}}>Settings</MenuItem>
+          <MenuItem
+            onClick={() => {
+              changePage("/profile");
+            }}
+          >
+            Profile
+          </MenuItem>
         </div>
         <Divider />
         <div className="my-3">

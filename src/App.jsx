@@ -8,6 +8,7 @@ import AuthContextProvider from "./components/providers/AuthContextProvider";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   return (
@@ -21,6 +22,10 @@ const App = () => {
             <Route
               path="/dashboard"
               element={<Protected component={<DashboardPage />} />}
+            />
+            <Route
+              path="/profile"
+              element={<Protected component={<ProfilePage />} />}
             />
 
             <Route path="*" element={<Navigate to="/login" />} />
