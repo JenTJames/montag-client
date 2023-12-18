@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
+import AuthContext from "../store/auth-context";
 import useHttp from "../hooks/use-http";
 import useToast from "../hooks/use-toast";
 
@@ -15,15 +16,27 @@ import UploadImage from "../components/UploadImage";
 import Autocomplete from "../components/Autocomplete";
 
 const ProfilePage = () => {
+  const [fetchedImage, setFetchedImage] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [organizations, setOrganizations] = useState([]);
+
+  const { user: currentUser } = useContext(AuthContext);
 
   const {
     isLoading: isFetchingOrganizations,
     requestData: fetchOrganizations,
   } = useHttp();
+  const { isLoading: isSavingUser, requestData: saveUser } = useHttp();
+  const { isLoading: isSavingUserImage, requestData: saveUserImage } =
+    useHttp();
+  const { isLoading: isFetchingUserDetails, requestData: fetchUserDetails } =
+    useHttp();
+  const { isLoading: isFetchingUserImage, requestData: fetchUserImage } =
+    useHttp();
 
   const { toast, closeToast, createToast } = useToast();
+
+  const { control: profileControl, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
     const getOrganizations = async () => {
@@ -31,26 +44,84 @@ const ProfilePage = () => {
       if (response.isError) return createToast(response.message, "error");
       setOrganizations(response.data);
     };
+
+    const getUserImage = async (imageName) => {
+      const response = await fetchUserImage(
+        "images?type=users&name=" + imageName
+      );
+      if (!response) {
+        createToast("Could not get the business image", "error");
+        return;
+      }
+      setFetchedImage(response.data);
+    };
+
+    const getUserDetails = async () => {
+      const response = await fetchUserDetails(
+        `users?email=${currentUser.email}&organization=true`,
+        "GET"
+      );
+      if (response.isError) return createToast(response.message, "error");
+      const user = response.data;
+      getUserImage(user.image);
+      setValue("firstname", user?.firstname || "");
+      setValue("lastname", user?.lastname || "");
+      setValue("phoneNumber", user?.phoneNumber || "");
+      setValue("organization", user?.organization || null);
+    };
     getOrganizations();
-  }, [createToast, fetchOrganizations]);
+    currentUser.email && getUserDetails();
+  }, [
+    createToast,
+    fetchOrganizations,
+    fetchUserDetails,
+    currentUser.email,
+    setValue,
+    fetchUserImage,
+  ]);
 
-  const { control: profileControl, handleSubmit } = useForm({
-    defaultValues: {
-      firstname: "",
-      lastname: "",
-      phone: "",
-      organization: null,
-    },
-  });
+  const saveAvatar = async (user) => {
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+    const endpoint = `users/uploads?id=${user.id}&name=${
+      user.firstname + " " + user.lastname
+    }&saveType=users`;
+    await saveUserImage(endpoint, "POST", formData);
+  };
 
-  const submitHandler = ({ firstname, lastname, phone, organization }) => {
-    console.log(firstname, lastname, phone, organization);
-    console.log(selectedImage);
+  const updateHandler = async ({
+    firstname,
+    lastname,
+    phoneNumber,
+    organization,
+  }) => {
+    const user = {
+      id: currentUser.id,
+      firstname,
+      lastname,
+      phoneNumber,
+      organizationId: organization.id,
+    };
+    const response = await saveUser("users/", "PUT", user);
+    if (response.isError) return createToast(response.message, "error");
+    if (!selectedImage)
+      return createToast("User details updated successfully!", "success");
+    const savedUser = response.data;
+    await saveAvatar(savedUser);
+    createToast("User details updated successfully!", "success");
   };
 
   return (
     <>
-      <Spinner isLoading={isFetchingOrganizations} />
+      <Spinner
+        isLoading={
+          isFetchingOrganizations ||
+          isFetchingUserDetails ||
+          isSavingUserImage ||
+          isSavingUser ||
+          isFetchingUserImage
+        }
+      />
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
       </Toast>
@@ -59,9 +130,12 @@ const ProfilePage = () => {
           My Profile
         </Typography>
         <div className="flex w-full bg-slate-50 flex-col p-5 rounded-md gap-7 border">
-          <div className="flex justify-center items-center gap-5">
+          <div className="flex justify-center items-center gap-36">
             <div className="flex flex-col gap-5 justify-start">
-              <UploadImage pickImage={setSelectedImage} />
+              <UploadImage
+                pickImage={setSelectedImage}
+                defaultImage={fetchedImage}
+              />
               <Typography
                 className="text-slate-500 w-52 text-center"
                 variant="caption"
@@ -69,7 +143,7 @@ const ProfilePage = () => {
                 Allowed *.jpg, *.jpeg or *.png with max size 3 Mb
               </Typography>
             </div>
-            <Form onSubmit={handleSubmit(submitHandler)}>
+            <Form onSubmit={handleSubmit(updateHandler)}>
               <Row>
                 <Input
                   control={profileControl}
@@ -94,7 +168,7 @@ const ProfilePage = () => {
               </Row>
               <Input
                 control={profileControl}
-                name="phone"
+                name="phoneNumber"
                 label="Phone Number"
                 type="text"
                 rules={{

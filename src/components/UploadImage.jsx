@@ -66,7 +66,7 @@ const UploadImage = ({ pickImage, defaultImage }) => {
 
 UploadImage.propTypes = {
   pickImage: PropTypes.func.isRequired,
-  defaultImage: PropTypes.object,
+  defaultImage: PropTypes.string,
 };
 
 export default UploadImage;
