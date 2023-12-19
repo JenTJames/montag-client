@@ -54,6 +54,7 @@ const LoginPage = () => {
       firstname: response.data.firstname,
       lastname: response.data.lastname,
       email: response.data.email,
+      image: response.data.image,
     });
     navigate("/dashboard");
   };
