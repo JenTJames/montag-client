@@ -8,6 +8,7 @@ const AuthContextProvider = ({ children }) => {
     firstname: "",
     lastname: "",
     email: "",
+    image: "",
   });
 
   return (
