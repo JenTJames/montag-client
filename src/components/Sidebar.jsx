@@ -33,7 +33,7 @@ const Sidebar = () => {
         onClick={() => {
           toggleExpansion();
         }}
-        className="absolute p-1 top-7 -right-3 bg-white border border-slate-200 border-dashed rounded-full"
+        className="absolute cursor-pointer p-1 top-7 z-10 -right-3 bg-white border border-slate-200 border-dashed rounded-full"
       >
         {isExpanded ? <CgChevronLeft /> : <CgChevronRight />}
       </div>
