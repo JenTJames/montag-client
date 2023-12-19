@@ -20,7 +20,8 @@ const ProfilePage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [organizations, setOrganizations] = useState([]);
 
-  const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser, setUser: setCurrentUser } =
+    useContext(AuthContext);
 
   const {
     isLoading: isFetchingOrganizations,
@@ -86,7 +87,11 @@ const ProfilePage = () => {
     const endpoint = `users/uploads?id=${user.id}&name=${
       user.firstname + " " + user.lastname
     }&saveType=users`;
-    await saveUserImage(endpoint, "POST", formData);
+    const response = await saveUserImage(endpoint, "POST", formData);
+    if (response.isError) {
+      return createToast(response.message, "error");
+    }
+    return response.data;
   };
 
   const updateHandler = async ({
@@ -107,7 +112,13 @@ const ProfilePage = () => {
     if (!selectedImage)
       return createToast("User details updated successfully!", "success");
     const savedUser = response.data;
-    await saveAvatar(savedUser);
+    const imageName = await saveAvatar(savedUser);
+    setCurrentUser((currentState) => {
+      return {
+        ...currentState,
+        image: imageName,
+      };
+    });
     createToast("User details updated successfully!", "success");
   };
 
