@@ -8,6 +8,7 @@ import useHttp from "../hooks/use-http";
 import useToast from "../hooks/use-toast";
 
 import Row from "../components/Row";
+import Page from "../components/Page";
 import Form from "../components/Form";
 import Input from "../components/Input";
 import Toast from "../components/Toast";
@@ -136,7 +137,7 @@ const ProfilePage = () => {
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
       </Toast>
-      <div className="flex flex-col gap-10 min-w-full">
+      <Page>
         <Typography className="text-secondary-800" variant="h4">
           My Profile
         </Typography>
@@ -213,7 +214,7 @@ const ProfilePage = () => {
             </Form>
           </div>
         </div>
-      </div>
+      </Page>
     </>
   );
 };
