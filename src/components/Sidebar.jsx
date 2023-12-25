@@ -17,13 +17,13 @@ const Sidebar = () => {
     <div className="relative">
       <StyledSideBar
         $isExpanded={isExpanded}
-        className="min-h-screen flex-0 bg-transparent border-r border-dashed border-r-slate-200 py-5 px-2 flex flex-col gap-7 items-center"
+        className="min-h-screen flex-0 bg-transparent border-r border-dashed border-r-slate-200 py-5 px-2 flex flex-col gap-7 items-center transition-all duration-200"
       >
         <img className="w-12" src={Logo} alt="brand" />
         <div className="flex flex-col gap-3">
           <NavLink
             label="Dashboard"
-            icon={<MdDashboard size={25} />}
+            icon={<MdDashboard size={isExpanded ? 45 : 25} />}
             to="/dashboard"
             orientation={isExpanded ? "horizontal" : "vertical"}
           />

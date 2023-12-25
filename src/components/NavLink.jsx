@@ -34,7 +34,11 @@ const NavLink = ({ to, label, icon, orientation = "vertical" }) => {
         {icon}
         <StyledTextWrapper orientation={orientation}>
           <Typography
-            className="text-center text-primary-500"
+            className={(navData) =>
+              navData.isActive
+                ? "text-center text-primary-500"
+                : "text-center text-subtle"
+            }
             variant={orientation === "vertical" ? "caption" : "subtitle1"}
           >
             {label}
