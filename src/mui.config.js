@@ -68,6 +68,18 @@ export const lightTheme = createTheme({
         disableRipple: true,
       },
     },
+    MuiRadio: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          marginRight: 40,
+        },
+      },
+    },
   },
 });
 
