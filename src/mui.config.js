@@ -63,6 +63,11 @@ export const lightTheme = createTheme({
         },
       },
     },
+    MuiCheckbox: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
   },
 });
 
