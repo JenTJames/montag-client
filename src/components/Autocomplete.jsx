@@ -8,7 +8,6 @@ const Autocomplete = ({ options = [], label, name, rules, control }) => {
     name,
     control,
     rules,
-    defaultValue: "",
   });
 
   return (
@@ -16,20 +15,16 @@ const Autocomplete = ({ options = [], label, name, rules, control }) => {
       options={options}
       getOptionLabel={(option) => option.name || ""}
       filterSelectedOptions
-      isOptionEqualToValue={(option, value) => option.id === value.id}
-      renderInput={(params) => {
-        return (
-          <TextField
-            {...params}
-            label={label}
-            onChange={(e) => field.onChange(e.target.value)}
-            value={field.value || ""}
-            error={fieldState.invalid}
-            helperText={fieldState.error?.message}
-          />
-        );
-      }}
-      onChange={(_, values) => field.onChange(values)}
+      isOptionEqualToValue={(option, value) => option.id === value?.id}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          error={fieldState.invalid}
+          helperText={fieldState.error?.message}
+        />
+      )}
+      onChange={(_, value) => field.onChange(value)}
       value={field.value || null}
     />
   );
