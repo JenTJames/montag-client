@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import PropTypes from "prop-types";
-import { NavLink as MuiNavLink } from "react-router-dom";
+import { NavLink as RouterNavLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 
 const StyledDiv = styled.div`
@@ -22,7 +22,7 @@ const StyledTextWrapper = styled.div`
 
 const NavLink = ({ to, label, icon, orientation = "vertical" }) => {
   return (
-    <MuiNavLink
+    <RouterNavLink
       className={(navData) =>
         navData.isActive
           ? "p-3 bg-primary-100 rounded-md text-primary-700"
@@ -34,18 +34,13 @@ const NavLink = ({ to, label, icon, orientation = "vertical" }) => {
         {icon}
         <StyledTextWrapper orientation={orientation}>
           <Typography
-            className={(navData) =>
-              navData.isActive
-                ? "text-center text-primary-500"
-                : "text-center text-subtle"
-            }
             variant={orientation === "vertical" ? "caption" : "subtitle1"}
           >
             {label}
           </Typography>
         </StyledTextWrapper>
       </StyledDiv>
-    </MuiNavLink>
+    </RouterNavLink>
   );
 };
 
