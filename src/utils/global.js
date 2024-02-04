@@ -39,3 +39,28 @@ export const EXPERIENCE_LEVELS = [
     label: "4+ Years",
   },
 ];
+
+export const SALARY_INTERVALS = [
+  {
+    value: "hourly",
+    label: "Hourly",
+  },
+  {
+    value: "daily",
+    label: "Daily",
+  },
+  {
+    value: "fortnight",
+    label: "Fortnight",
+  },
+  {
+    value: "monthly",
+    label: "Monthly",
+  },
+  {
+    value: "annual",
+    label: "Annual",
+  },
+];
+
+export const WORKING_SCHEDULES = ["Monday to Friday", "Weekend Availability"];
