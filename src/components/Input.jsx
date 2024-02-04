@@ -6,7 +6,17 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
-const Input = ({ name, label, type, control, rules, icon, ...rest }) => {
+const Input = ({
+  name,
+  label,
+  type,
+  control,
+  rules,
+  icon,
+  multiline = false,
+  minRows = 1,
+  ...rest
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const passwordVisibilityHandler = () => {
@@ -18,12 +28,15 @@ const Input = ({ name, label, type, control, rules, icon, ...rest }) => {
       name={name}
       control={control}
       rules={rules}
+      defaultValue=""
       render={({ field, fieldState }) => (
         <TextField
           {...field}
           label={label}
           type={showPassword ? "text" : type}
           fullWidth
+          multiline={multiline}
+          minRows={minRows}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">{icon}</InputAdornment>
@@ -51,6 +64,8 @@ Input.propTypes = {
   control: PropTypes.object.isRequired,
   rules: PropTypes.object,
   icon: PropTypes.element,
+  multiline: PropTypes.bool,
+  minRows: PropTypes.number,
 };
 
 export default Input;
