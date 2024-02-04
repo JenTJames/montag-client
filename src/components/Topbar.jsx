@@ -33,7 +33,7 @@ const TopBar = () => {
       setImageUrl(response.data);
     };
 
-    getAvatar();
+    user?.image && getAvatar();
   }, [fetchAvatar, createToast, user]);
 
   const navigate = useNavigate();
