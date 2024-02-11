@@ -8,6 +8,7 @@ const Switch = ({ control, name, rules, label }) => {
     <Controller
       name={name}
       control={control}
+      defaultValue={false}
       rules={rules}
       render={({ field }) => (
         <FormControlLabel {...field} control={<MuiSwitch />} label={label} />
