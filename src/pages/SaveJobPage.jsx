@@ -28,6 +28,7 @@ import SplitForm from "../components/SplitForm";
 import RadioGroup from "../components/RadioGroup";
 import Datepicker from "../components/Datepicker";
 import Autocomplete from "../components/Autocomplete";
+import Page from "../components/Page";
 
 const SaveJobPage = () => {
   // const navigate = useNavigate();
@@ -143,7 +144,7 @@ const SaveJobPage = () => {
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
       </Toast>
-      <div className="flex flex-col gap-10 min-w-full p-5">
+      <Page>
         <Typography variant="h4">Create a new Job</Typography>
         <Form onSubmit={handleSubmit(createJobHandler)}>
           <SplitForm title="Details" description="Title, short description">
@@ -329,7 +330,7 @@ const SaveJobPage = () => {
             </LoadingButton>
           </div>
         </Form>
-      </div>
+      </Page>
     </>
   );
 };
