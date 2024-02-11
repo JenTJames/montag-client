@@ -1,17 +1,18 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
-import AuthContext from "../store/auth-context";
 import useHttp from "../hooks/use-http";
 import useToast from "../hooks/use-toast";
+import AuthContext from "../store/auth-context";
 
 import Menu from "./Menu";
 import Toast from "./Toast";
+import Spinner from "./Spinner";
 import MenuItem from "./MenuItem";
 
 const TopBar = () => {
@@ -19,22 +20,29 @@ const TopBar = () => {
 
   const { setUser, user } = useContext(AuthContext);
 
+  const { isLoading: isFetchingAvatarName, requestData: fetchAvatarName } =
+    useHttp();
   const { isLoading: isFetchingAvatar, requestData: fetchAvatar } = useHttp();
 
   const { closeToast, createToast, toast } = useToast();
 
   useEffect(() => {
-    const getAvatar = async () => {
+    const getAvatarName = async () => {
+      const response = await fetchAvatarName("users/" + user.id + "/avatar");
+      if (response.isError) return createToast(response.message, "error");
+      getAvatar(response.data.image);
+    };
+    const getAvatar = async (avatarName) => {
       const response = await fetchAvatar(
-        "images?type=users&name=" + user.image,
+        "images?type=users&name=" + avatarName,
         "GET"
       );
       if (response.isError) return createToast(response.message, "error");
       setImageUrl(response.data);
     };
 
-    user?.image && getAvatar();
-  }, [fetchAvatar, createToast, user]);
+    user.id && getAvatarName();
+  }, [fetchAvatar, createToast, user, fetchAvatarName]);
 
   const navigate = useNavigate();
 
@@ -56,6 +64,7 @@ const TopBar = () => {
 
   return (
     <>
+      <Spinner isLoading={isFetchingAvatarName} />
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
       </Toast>

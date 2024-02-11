@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { MdDashboard, MdWork } from "react-icons/md";
+import { FaClipboardCheck } from "react-icons/fa";
 import { CgChevronLeft, CgChevronRight } from "react-icons/cg";
 
 import Logo from "../assets/brand.svg";
@@ -31,6 +32,12 @@ const Sidebar = () => {
             label="Create Job"
             icon={<MdWork size={isExpanded ? 45 : 25} />}
             to="/jobs/new"
+            orientation={isExpanded ? "horizontal" : "vertical"}
+          />
+          <NavLink
+            label="My Listings"
+            icon={<FaClipboardCheck size={isExpanded ? 45 : 25} />}
+            to="/jobs/my-listings"
             orientation={isExpanded ? "horizontal" : "vertical"}
           />
         </div>

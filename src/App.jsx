@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProfilePage from "./pages/ProfilePage";
 import SaveJobPage from "./pages/SaveJobPage";
+import MyListingsPage from "./pages/MyListingsPage";
 
 const App = () => {
   return (
@@ -35,7 +36,10 @@ const App = () => {
                 path="/jobs/new"
                 element={<Protected component={<SaveJobPage />} />}
               />
-
+              <Route
+                path="/jobs/my-listings"
+                element={<Protected component={<MyListingsPage />} />}
+              />
               <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
           </div>

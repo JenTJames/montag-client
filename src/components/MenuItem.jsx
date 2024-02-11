@@ -7,9 +7,11 @@ const StyledLabel = styled.p`
 
 const MenuItem = ({ color, startIcon, children, onClick }) => {
   return (
-    <MuiMenuItem onClick={onClick}>
-      {startIcon}
-      <StyledLabel color={color}>{children}</StyledLabel>
+    <MuiMenuItem onClick={onClick} disableRipple>
+      <div className="flex gap-3 items-center">
+        {startIcon}
+        <StyledLabel color={color}>{children}</StyledLabel>
+      </div>
     </MuiMenuItem>
   );
 };
