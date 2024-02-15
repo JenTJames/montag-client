@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import Chip from "@mui/material/Chip";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
@@ -9,6 +10,7 @@ import { IoMdMore } from "react-icons/io";
 import { HiEye } from "react-icons/hi2";
 import { HiUserGroup } from "react-icons/hi";
 import { GoOrganization } from "react-icons/go";
+import { TiWarningOutline } from "react-icons/ti";
 import { MdModeEditOutline, MdDelete } from "react-icons/md";
 import { FaClock, FaStar, FaMoneyBillAlt, FaCrown } from "react-icons/fa";
 
@@ -64,6 +66,20 @@ const Job = ({ job }) => {
       case "annual":
         return "$" + salary.toLocaleString("en-US") + "/Annum";
     }
+  };
+
+  const renderExpiryChip = () => {
+    const today = dayjs();
+    const expiryDay = dayjs(job?.expiresOn);
+    if (expiryDay.diff(today, "days") <= 3)
+      return (
+        <Chip
+          label="Expiring Soon"
+          size="small"
+          color="warning"
+          icon={<TiWarningOutline />}
+        />
+      );
   };
 
   return (
@@ -125,9 +141,14 @@ const Job = ({ job }) => {
         <p className="text-xs text-slate-500">
           Posted on: {dayjs(job?.createdAt).format("DD MMMM YYYY")}
         </p>
-        <div className="flex items-center gap-2">
-          <HiUserGroup className="text-emerald-500" />
-          <p className="text-emerald-500 text-xs font-semibold">0 Applicants</p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <HiUserGroup className="text-emerald-500" />
+            <p className="text-emerald-500 text-xs font-semibold">
+              0 Applicants
+            </p>
+          </div>
+          {renderExpiryChip()}
         </div>
         <Divider variant="dashed" />
         <div className="grid grid-cols-2 gap-y-3">
