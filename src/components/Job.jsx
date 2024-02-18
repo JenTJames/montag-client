@@ -141,6 +141,9 @@ const Job = ({ job }) => {
         <p className="text-xs text-slate-500">
           Posted on: {dayjs(job?.createdAt).format("DD MMMM YYYY")}
         </p>
+        <p className="text-xs text-slate-500">
+          Expiring on: {dayjs(job?.expiresOn).format("DD MMMM YYYY")}
+        </p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <HiUserGroup className="text-emerald-500" />
