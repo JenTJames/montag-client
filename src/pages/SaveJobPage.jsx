@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useContext } from "react";
+import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
-// import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import FormLabel from "@mui/material/FormLabel";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -17,8 +18,10 @@ import {
   WORKING_SCHEDULES,
 } from "../utils/global";
 import { convertToLowerCamelCase } from "../utils/lib";
+import AuthContext from "../store/auth-context";
 
 import Form from "../components/Form";
+import Page from "../components/Page";
 import Toast from "../components/Toast";
 import Input from "../components/Input";
 import Switch from "../components/Switch";
@@ -28,17 +31,25 @@ import SplitForm from "../components/SplitForm";
 import RadioGroup from "../components/RadioGroup";
 import Datepicker from "../components/Datepicker";
 import Autocomplete from "../components/Autocomplete";
-import Page from "../components/Page";
 
 const SaveJobPage = () => {
   // const navigate = useNavigate();
+  const { jobId } = useParams();
+
+  const { user } = useContext(AuthContext);
 
   const { get: getJobFamilies, setData: setJobFamilies } = useData();
   const { get: getSkills, setData: setSkills } = useData();
   const { get: getLocations, setData: setLocations } = useData();
   const { get: getPerks, setData: setPerks } = useData();
 
-  const { control: jobControl, watch, setValue, handleSubmit } = useForm();
+  const {
+    control: jobControl,
+    watch,
+    setValue,
+    handleSubmit,
+    reset,
+  } = useForm();
 
   const { toast, createToast, closeToast } = useToast();
 
@@ -47,8 +58,10 @@ const SaveJobPage = () => {
   const { requestData: fetchSkills, isLoading: isFetchingSkills } = useHttp();
   const { requestData: fetchLocations, isLoading: isFetchingLocations } =
     useHttp();
+  const { requestData: fetchJobById, isLoading: isFetchingJobById } = useHttp();
   const { requestData: fetchPerks, isLoading: isFetchingPerks } = useHttp();
   const { requestData: createJob, isLoading: isCreatingJob } = useHttp();
+  const { requestData: updateJob, isLoading: isUpdatingJob } = useHttp();
 
   // Initializes job families, locations and perks
   useEffect(() => {
@@ -80,18 +93,52 @@ const SaveJobPage = () => {
     setPerks,
   ]);
 
-  const findSkills = async (jobFamily) => {
-    setValue("skills", []);
-    if (!jobFamily) return setSkills([]);
-    const response = await fetchSkills("skills?jobFamilyId=" + jobFamily?.id);
-    if (response.isError) return createToast(response.message, "error");
-    setSkills(response.data);
-  };
-
   const skills = watch("skills", []);
+
+  const findSkills = useCallback(
+    async (jobFamily) => {
+      setValue("skills", []);
+      if (!jobFamily) return setSkills([]);
+      const response = await fetchSkills("skills?jobFamilyId=" + jobFamily?.id);
+      if (response.isError) return createToast(response.message, "error");
+      setSkills(response.data);
+    },
+    [createToast, fetchSkills, setSkills, setValue]
+  );
+
+  // If the Job ID is set in the URL, initialize the inputs
+  useEffect(() => {
+    const initializeInputsWithJobDetails = async () => {
+      const response = await fetchJobById("jobs/" + jobId);
+      if (response.isError) return createToast(response.message, "error");
+      await findSkills(response.data.jobFamily);
+      setValue("title", response.data.title);
+      setValue("jobDescription", response.data.description);
+      setValue("keyResponsibilities", response.data.responsibilities);
+      setValue("whyToJoin", response.data.whyToJoin);
+      setValue("employmentType", response.data.employmentType);
+      setValue("experienceLevel", response.data.experienceLevel);
+      setValue("isJobVisaProvided", response.data.isJobVisaProvided); // TODO: Not Working
+      setValue("jobFamily", response.data.jobFamily);
+      setValue("skills", response.data.skills);
+      setValue("workingSchedule", response.data.workingSchedule);
+      setValue("locations", response.data.locations);
+      setValue("expiry", dayjs(response.data.expiresOn));
+      setValue("salaryInterval", response.data.salaryFrequency);
+      setValue("salary", response.data.salary);
+      setValue("isSalaryNegotiable", response.data.isSalaryNegotiable); // TODO: Not Working
+      response.data.perks.forEach((perk) => {
+        setValue(convertToLowerCamelCase(perk.name), true);
+      });
+    };
+    if (jobId) initializeInputsWithJobDetails();
+    else reset({});
+  }, [jobId, fetchJobById, createToast, setValue, findSkills, reset]);
 
   const makeJob = (job) => {
     return {
+      id: jobId ? +jobId : undefined,
+      postedById: user.id,
       title: job?.title,
       description: job?.jobDescription,
       keyResponsibilities: job?.keyResponsibilities,
@@ -122,11 +169,16 @@ const SaveJobPage = () => {
     };
   };
 
-  const createJobHandler = async (data) => {
+  const saveJobHandler = async (data) => {
     const job = makeJob(data);
-    const response = await createJob("jobs", "POST", job);
+    let response;
+    if (!jobId) response = await createJob("jobs", "POST", job);
+    else response = await updateJob("jobs", "PUT", job);
     if (response.isError) return createToast(response.message, "error");
-    createToast("Job created successfully", "success");
+    const toastMessage = jobId
+      ? "Job updated successfully"
+      : "Job created successfully";
+    createToast(toastMessage, "success");
     // navigate("/dashboard");
   };
 
@@ -138,15 +190,19 @@ const SaveJobPage = () => {
           isFetchingSkills ||
           isFetchingLocations ||
           isFetchingPerks ||
-          isCreatingJob
+          isCreatingJob ||
+          isFetchingJobById ||
+          isUpdatingJob
         }
       />
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
         {toast.message}
       </Toast>
       <Page>
-        <Typography variant="h4">Create a new Job</Typography>
-        <Form onSubmit={handleSubmit(createJobHandler)}>
+        <Typography variant="h4">
+          {jobId ? "Update Job" : "Create a new Job"}
+        </Typography>
+        <Form onSubmit={handleSubmit(saveJobHandler)}>
           <SplitForm title="Details" description="Title, short description">
             <Input
               control={jobControl}
@@ -326,7 +382,7 @@ const SaveJobPage = () => {
               startIcon={<IoCheckmarkDoneCircle size={25} />}
               size="large"
             >
-              Create Job
+              {jobId ? "Update Job" : "Create Job"}
             </LoadingButton>
           </div>
         </Form>

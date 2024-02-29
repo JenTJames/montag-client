@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import Chip from "@mui/material/Chip";
 import Avatar from "@mui/material/Avatar";
@@ -38,6 +38,7 @@ const JobDetailPage = () => {
   const [imageUrl, setImageUrl] = useState("");
 
   const { jobId } = useParams();
+  const navigate = useNavigate();
 
   const { user } = useContext(AuthContext);
 
@@ -87,6 +88,10 @@ const JobDetailPage = () => {
     if (experience === "two") return "2 Years";
     if (experience === "three") return "3 Years";
     if (experience === "fourPlus") return "Above 4 Years";
+  };
+
+  const editHandler = () => {
+    navigate("/jobs/my-listings/" + jobId + "/update");
   };
 
   return (
@@ -269,7 +274,11 @@ const JobDetailPage = () => {
             </Card>
             {user?.id === job?.postedByUser?.id ? (
               <>
-                <Button variant="contained" startIcon={<FaEdit />}>
+                <Button
+                  variant="contained"
+                  startIcon={<FaEdit />}
+                  onClick={editHandler}
+                >
                   Edit
                 </Button>
                 <Button

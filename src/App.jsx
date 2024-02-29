@@ -45,6 +45,10 @@ const App = () => {
                 path="/jobs/my-listings/:jobId"
                 element={<Protected component={<JobDetailPage />} />}
               />
+              <Route
+                path="/jobs/my-listings/:jobId/update"
+                element={<Protected component={<SaveJobPage />} />}
+              />
               <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
           </div>

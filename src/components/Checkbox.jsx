@@ -9,9 +9,18 @@ const Checkbox = ({ control, name, label, rules }) => {
       name={name}
       control={control}
       rules={rules}
-      defaultValue={false}
-      render={({ field }) => (
-        <FormControlLabel {...field} control={<MuiCheckbox />} label={label} />
+      render={({ field: { onChange, onBlur, value, ref } }) => (
+        <FormControlLabel
+          control={
+            <MuiCheckbox
+              onBlur={onBlur}
+              onChange={onChange}
+              checked={value || false}
+              inputRef={ref}
+            />
+          }
+          label={label}
+        />
       )}
     />
   );
