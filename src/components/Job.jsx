@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import Chip from "@mui/material/Chip";
@@ -25,6 +26,8 @@ import Toast from "./Toast";
 
 const Job = ({ job }) => {
   const [imageUrl, setImageUrl] = useState("");
+
+  const navigate = useNavigate();
 
   const { requestData: fetchOrganizationImage } = useHttp();
 
@@ -82,6 +85,13 @@ const Job = ({ job }) => {
       );
   };
 
+  const navigateHandler = (to) => {
+    if (to === "jobDetails") {
+      const jobId = job?.id;
+      return navigate("/jobs/" + jobId);
+    }
+  };
+
   return (
     <>
       <Toast show={toast.show} close={closeToast} severity={toast.severity}>
@@ -121,7 +131,12 @@ const Job = ({ job }) => {
               </Tooltip>
             }
           >
-            <MenuItem startIcon={<HiEye color="grey" fontSize={25} />}>
+            <MenuItem
+              onClick={() => {
+                navigateHandler("jobDetails");
+              }}
+              startIcon={<HiEye color="grey" fontSize={25} />}
+            >
               Preview
             </MenuItem>
             <MenuItem

@@ -10,7 +10,7 @@ export const convertToLowerCamelCase = (string) => {
   return convertedString;
 };
 
-export const convertCamelCaseToSentence = (camelCaseWord) => {
+export const convertCamelCaseToSentence = (camelCaseWord = "") => {
   // Replace all occurrences of capital letters with a space followed by the same letter in lowercase
   const spacedWord = camelCaseWord.replace(/([A-Z])/g, " $1");
   // Capitalize the first letter of the resulting string
