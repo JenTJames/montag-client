@@ -42,7 +42,7 @@ const App = () => {
                 element={<Protected component={<MyListingsPage />} />}
               />
               <Route
-                path="/jobs/:jobId"
+                path="/jobs/my-listings/:jobId"
                 element={<Protected component={<JobDetailPage />} />}
               />
               <Route path="*" element={<Navigate to="/login" />} />

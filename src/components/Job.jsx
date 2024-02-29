@@ -88,7 +88,7 @@ const Job = ({ job }) => {
   const navigateHandler = (to) => {
     if (to === "jobDetails") {
       const jobId = job?.id;
-      return navigate("/jobs/" + jobId);
+      return navigate("/jobs/my-listings/" + jobId);
     }
   };
 
