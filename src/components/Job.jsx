@@ -86,10 +86,10 @@ const Job = ({ job }) => {
   };
 
   const navigateHandler = (to) => {
-    if (to === "jobDetails") {
-      const jobId = job?.id;
-      return navigate("/jobs/my-listings/" + jobId);
-    }
+    const jobId = job?.id;
+    if (to === "jobDetails") return navigate("/jobs/my-listings/" + jobId);
+    else if (to === "updateJob")
+      return navigate("/jobs/my-listings/" + jobId + "/update");
   };
 
   return (
@@ -140,6 +140,9 @@ const Job = ({ job }) => {
               Preview
             </MenuItem>
             <MenuItem
+              onClick={() => {
+                navigateHandler("updateJob");
+              }}
               startIcon={<MdModeEditOutline color="grey" fontSize={25} />}
             >
               Edit
